@@ -1,0 +1,81 @@
+---
+ - name: configuring catalogue server
+   hosts: catalogue
+   become: true
+   tasks:
+   - name: disable nodejs
+     ansible.builtin.command: dnf module disable nodejs -y
+
+   - name: enable nodejs 20
+     ansible.builtin.command: dnf module enable nodejs:20 -y
+
+   - name: installing nodejs
+     ansible.builtin.dnf:
+      name: nodejs
+      state: present
+
+   - name: create app directory
+     ansible.builtin.file:
+      path: /app
+      state: directory
+
+   - name: create roboshop system user
+     ansible.builtin.user:
+       name: roboshop
+       shell: /sbin/nologin
+       system: true
+       home: /app
+
+   - name: downloading dependencices
+     ansible.builtin.get_url:
+       url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+       dest: /tmp/catalogue.zip
+
+   - name: unzipping catalogue
+     ansible.builtin.unarchive:
+       src: /tmp/catalogue.zip
+       dest: /app
+       remote_src: yes
+
+   - name: installing npm in app directory
+     community.general.npm:
+       path: /app
+
+
+   - name: copying catalogue service
+     ansible.builtin.copy:
+       src: catalogue.service
+       dest: /etc/systemd/system/catalogue.service
+
+
+   - name: daemon reload 
+     ansible.builtin.systemd_service:
+       daemon_reload: true
+
+   - name: start and enable catalogue service
+     ansible.builtin.service:
+       name: catalogue
+       state: started
+       enabled: true
+
+   - name: copying mongodb client
+     ansible.builtin.copy:
+       src: mongo.repo
+       dest: /etc/yum.repos.d/mongo.repo
+
+   - name: installing mongodb client
+     ansible.builtin.dnf:
+       name: mongodb-mongosh
+       state: present
+
+   - name: check products loaded or not
+     ansible.builtin.command: mongosh --host mongodb.nadalla.store --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
+     register: catalogue_output
+
+   - name: print catalogue output 
+     ansible.builtin.debug:
+       msg: "{{ catalogue_output }}"
+
+   - name: load products
+     ansible.builtin.shell: mongosh --host mongodb.nadalla.store < /app/db/master-data.js
+     when: catalogue_output.stdout | int < 0 #If "1" means data exists, and "0" means no data.    

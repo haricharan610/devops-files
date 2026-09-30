@@ -1,0 +1,7 @@
+[Service]
+User=roboshop
+Environment=MONGO=true
+Environment=MONGO_URL="mongodb://mongodb.nadalla.store:27017/catalogue"
+Environment=CATALOGUE_SERVER_PORT=8081
+ExecStart=/bin/node /app/server.js
+SyslogIdentifier=catalogue

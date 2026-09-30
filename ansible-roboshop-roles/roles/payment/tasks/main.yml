@@ -1,0 +1,23 @@
+---
+ - name: app setup
+   include_role:
+     name: common
+     tasks_from: app-setup.yml
+
+
+ - name: python setup
+   include_role:
+     name: common
+     tasks_from: python.yml
+
+ - name: copying payment service
+   ansible.builtin.template:
+     src: payment.service.j2
+     dest: /etc/systemd/system/payment.service
+
+ - name: systemd setup
+   include_role:
+     name: common
+     tasks_from: systemd.yml
+     
+                

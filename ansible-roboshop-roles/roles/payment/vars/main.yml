@@ -1,0 +1,5 @@
+CART_HOST: cart.nadalla.store
+USER_HOST: user.nadalla.store
+RABBITMQ_HOST: rabbitmq.nadalla.store
+RABBITMQ_USER: roboshop
+RABBITMQ_PASSWORD: roboshop123

@@ -1,0 +1,2 @@
+REDIS_HOST: redis.nadalla.store
+MONGODB_HOST: mongodb.nadalla.store

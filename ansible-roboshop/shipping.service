@@ -1,0 +1,13 @@
+[Unit]
+Description=Shipping Service
+
+[Service]
+User=roboshop
+Environment=CART_ENDPOINT=cart.nadalla.store:8082
+Environment=DB_HOST=localhost
+Environment=SERVER_PORT=8081
+ExecStart=/bin/java -jar /app/shipping.jar --server.port=8081
+SyslogIdentifier=shipping
+
+[Install]
+WantedBy=multi-user.targetæ
