@@ -1,5 +1,5 @@
-output "azz_info" {
-    value = module.azz_info
+output "azs_info" {
+    value = module.azs_info
   
 }
 
@@ -19,6 +19,6 @@ output "private_subnet_ids" {
 }
 
 output "database_ids" {
-    value = module.vpc.database_ids
+    value = module.vpc.database_subnet_ids
   
 }
