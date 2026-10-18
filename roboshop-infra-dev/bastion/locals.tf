@@ -5,8 +5,8 @@ locals {
   public_subnet_id = split(",", data.aws_ssm_parameter.public_subnet_id.value)[0]
 
   common_tags = {
-    project     = "roboshop"
-    environment = "dev"
+    project     = var.project
+    environment = var.environment
     terraform   = true
   }
 }
