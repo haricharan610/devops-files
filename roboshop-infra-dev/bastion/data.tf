@@ -24,7 +24,7 @@ provider "aws" {
 
 data "aws_ami" "joindevops" {
     most_recent = true
-    owners = "378149659803"
+    owners = ["378149659803"]
 
 
     filter {
@@ -39,13 +39,13 @@ data "aws_ami" "joindevops" {
   
 }
 
-data "aws_ssm_parameter" "backend_sg_id" {
-    name = "/${roboshop}/${dev}/bastion_sg_id"
+data "aws_ssm_parameter" "bastion_sg_id" {
+    name = "/roboshop/dev/bastion_sg_id"
   
 }
 
 data "aws_ssm_parameter" "public_subnet_id" {
-    name = "/${roboshop}/${dev}/public_subnet_id"
+    name = "/roboshop/dev/public_subnet_id"
   
 }
 
