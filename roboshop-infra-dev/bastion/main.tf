@@ -8,7 +8,7 @@ resource "aws_instance" "bastion" {
   tags = merge(
     local.common_tags,
     {
-      Name = "roboshop-dev-bastion"
+      Name = "${var.project}-${var.environment}"
     }
   )
 
