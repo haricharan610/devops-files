@@ -26,7 +26,7 @@ resource "aws_security_group_rule" "bastion_laptop" {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = ["0.0.0.0./0"]
+    cidr_blocks = ["0.0.0.0/0"]
     security_group_id = module.bastion.sg_id
   
 }
@@ -66,7 +66,7 @@ resource "aws_security_group_rule" "vpn_ssh" {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = ["0.0.0.0./0"]
+    cidr_blocks = ["0.0.0.0/0"]
     security_group_id = module.vpn.sg_id
   
 }
@@ -76,7 +76,7 @@ resource "aws_security_group_rule" "vpn_https" {
     from_port = 443
     to_port = 443
     protocol = "tcp"
-    cidr_blocks = ["0.0.0.0./0"]
+    cidr_blocks = ["0.0.0.0/0"]
     security_group_id = module.vpn.sg_id
   
 }
@@ -86,7 +86,7 @@ resource "aws_security_group_rule" "vpn_1194" {
     from_port = 1194
     to_port = 1194
     protocol = "tcp"
-    cidr_blocks = ["0.0.0.0./0"]
+    cidr_blocks = ["0.0.0.0/0"]
     security_group_id = module.vpn.sg_id
   
 }
@@ -96,7 +96,7 @@ resource "aws_security_group_rule" "vpn_943" {
     from_port = 943
     to_port = 943
     protocol = "tcp"
-    cidr_blocks = ["0.0.0.0./0"]
+    cidr_blocks = ["0.0.0.0/0"]
     security_group_id = module.vpn.sg_id
   
 }
