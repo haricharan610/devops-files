@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "hari-terraform-state-2026 "
+    bucket = "hari-terraform-state-2026"
     key    = "roboshop-dev-sg"
     region = "us-east-1"
     encrypt        = true
