@@ -26,9 +26,9 @@ resource "terraform_data" "catalogue" {
   }
 
   provisioner "file" {
-    source      = "${path.module}/bootstrap.sh"
-    destination = "/tmp/bootstrap.sh"
-  }
+  source      = "bootstrap.sh"
+  destination = "/tmp/bootstrap.sh"
+}
 
   provisioner "remote-exec" {
     inline = [
