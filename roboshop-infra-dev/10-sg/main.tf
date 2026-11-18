@@ -101,3 +101,44 @@ resource "aws_security_group_rule" "vpn_943" {
   
 }
 
+
+module "mongodb" {
+    source = "../../terraform-aws-securitygroup"
+    project = var.project
+    environment = var.environment
+
+    sg_name = "mongodb"
+    sg_description = "for mongodb"
+    vpc_id = local.vpc_id
+}
+
+resource "aws_security_group_rule" "mongodb_vpn" {
+  count = length(var.mongodb_ports_vpn)
+  type              = "ingress"
+  from_port         = var.mongodb_ports_vpn[count.index]
+  to_port           = var.mongodb_ports_vpn[count.index]
+  protocol          = "tcp"
+  source_security_group_id = module.vpn.sg_id
+  security_group_id = module.mongodb.sg_id
+}
+
+module "catalogue" {
+    source = "../../terraform-aws-securitygroup"
+    project = var.project
+    environment = var.environment
+
+    sg_name = "catalogue"
+    sg_description = "for catalogue"
+    vpc_id = local.vpc_id
+}
+
+resource "aws_security_group_rule" "catalogue" {
+  count = length(var.catalogue_ports_vpn)
+  type              = "ingress"
+  from_port         = var.catalogue_ports_vpn[count.index]
+  to_port           = var.catalogue_ports_vpn[count.index]
+  protocol          = "tcp"
+  source_security_group_id = module.vpn.sg_id
+  security_group_id = module.catalogue.sg_id
+}
+
