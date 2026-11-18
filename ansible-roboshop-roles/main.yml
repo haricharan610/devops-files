@@ -1,6 +1,8 @@
 ---
  - name: configue {{ component }}
-   hosts: "{{ component }}"
+   #hosts: "{{ component }}"
+   hosts: localhost
+   connection: local
    become: true
    roles:
    - "{{ component }}"
