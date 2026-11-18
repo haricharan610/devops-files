@@ -17,11 +17,6 @@ resource "terraform_data" "catalogue" {
   triggers_replace = [
     aws_instance.catalogue.id
   ]
-  
-  provisioner "file" {
-    source      = "bootstrap.sh"
-    destination = "/tmp/bootstrap.sh"
-  }
 
   connection {
     type     = "ssh"
@@ -30,10 +25,15 @@ resource "terraform_data" "catalogue" {
     host     = aws_instance.catalogue.private_ip
   }
 
+  provisioner "file" {
+    source      = "${path.module}/bootstrap.sh"
+    destination = "/tmp/bootstrap.sh"
+  }
+
   provisioner "remote-exec" {
     inline = [
       "chmod +x /tmp/bootstrap.sh",
-      "sudo sh /tmp/bootstrap.sh catalogue ${var.environment}"
+      "sudo bash /tmp/bootstrap.sh catalogue ${var.environment}"
     ]
   }
 }
