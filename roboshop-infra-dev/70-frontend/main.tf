@@ -15,15 +15,6 @@ resource "aws_instance" "frontend" {
 }
 
 
-resource "aws_route53_record" "frontend" {
-  zone_id         = var.zone_id
-  name            = "nadalla.store"
-  type            = "A"
-  ttl             = 60
-  records         = [aws_instance.frontend.public_ip]
-  allow_overwrite = true
-}
-
 
 resource "terraform_data" "frontend" {
   triggers_replace = [
@@ -48,4 +39,14 @@ resource "terraform_data" "frontend" {
       "sudo sh /tmp/frontend.sh frontend ${var.environment}"
     ]
   }
+}
+
+
+resource "aws_route53_record" "frontend" {
+  zone_id = var.zone_id
+  name    = "frontend-${var.environment}.${var.zone_name}"
+  type    = "A"
+  ttl     = 1
+  records = [aws_instance.frontend.public_ip]
+  allow_overwrite = true
 }
