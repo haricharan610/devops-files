@@ -98,8 +98,24 @@
     dest: /etc/nginx/nginx.conf
     validate: "/usr/sbin/nginx -t -c %s"
 
-- name: Start nginx with the tested config
-  ansible.builtin.service:
-    name: nginx
-    state: restarted
-    enabled: true
+- name: Test the installed nginx configuration
+  ansible.builtin.command: /usr/sbin/nginx -t
+  changed_when: false
+
+- name: Start nginx and report any startup error
+  block:
+    - name: Enable and restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+        enabled: true
+
+  rescue:
+    - name: Read nginx startup log
+      ansible.builtin.command: journalctl -u nginx -n 30 --no-pager
+      register: nginx_log
+      changed_when: false
+
+    - name: Show why nginx failed
+      ansible.builtin.fail:
+        msg: "{{ nginx_log.stdout_lines }}"
