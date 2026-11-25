@@ -1,4 +1,4 @@
-###mongodb
+
 resource "aws_instance" "frontend" {
   ami           = local.ami_id
   instance_type = "t3.micro"
