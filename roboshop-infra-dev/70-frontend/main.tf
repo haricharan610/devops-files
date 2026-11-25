@@ -4,6 +4,7 @@ resource "aws_instance" "frontend" {
   instance_type = "t3.micro"
   vpc_security_group_ids = [local.frontend_sg_id]
   subnet_id = local.public_subnet_id
+  #associate_public_ip_address = true
 
   tags = merge(
     local.common_tags,
@@ -12,6 +13,17 @@ resource "aws_instance" "frontend" {
     }
   )
 }
+
+
+resource "aws_route53_record" "frontend" {
+  zone_id         = var.zone_id
+  name            = "nadalla.store"
+  type            = "A"
+  ttl             = 60
+  records         = [aws_instance.frontend.public_ip]
+  allow_overwrite = true
+}
+
 
 resource "terraform_data" "frontend" {
   triggers_replace = [
