@@ -8,7 +8,7 @@ terraform {
 
   backend "s3" {
     bucket = "hari-terraform-state-2026"
-    key    = "roboshop-dev-backend"
+    key    = "roboshop-dev-catalogue"
     region = "us-east-1"
     encrypt        = true
     use_lockfile = true

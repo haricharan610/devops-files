@@ -184,3 +184,23 @@ resource "aws_security_group_rule" "redis" {
 }
 
 
+module "catalogue" {
+    source = "../../terraform-aws-securitygroup"
+    project = var.project
+    environment = var.environment
+
+    sg_name = "catalogue"
+    sg_description = "for catalogue"
+    vpc_id = local.vpc_id
+}
+
+resource "aws_security_group_rule" "catalogue" {
+  count = length(var.catalogue_ports_vpn)
+  type              = "ingress"
+  from_port         = var.catalogue_ports_vpn[count.index]
+  to_port           = var.catalogue_ports_vpn[count.index]
+  protocol          = "tcp"
+  source_security_group_id = module.vpn.sg_id
+  security_group_id = module.catalogue.sg_id
+}
+
